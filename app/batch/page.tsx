@@ -1,12 +1,13 @@
 
 // Batch component
+"use client";
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import ActionBlock from '../components/action-block';
-import { ACTIONS, ProtocolNames } from '../constants/constants';
+import ActionBlock from '../../components/action-block';
+import { ACTIONS, ProtocolNames } from '../../constants/constants';
 
-import styles from '../styles/batch.module.css';
+import styles from '@/styles/batch.module.css';
 import { Reorder } from "framer-motion";
 
 const initBlockState = { id: 1, action: Object.keys(ACTIONS)[1], protocol: Object.keys(ProtocolNames)[1] };
@@ -57,6 +58,8 @@ const Batch = () => {
   const renderConnected = () => {
     return (
       <div className={styles.container}>
+
+        <h2 className='text-red-400'> kamakl </h2>
         <Reorder.Group
           as="ul"
           className={styles.actionsWrapper}
