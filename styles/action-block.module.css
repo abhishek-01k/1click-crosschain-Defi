@@ -2,8 +2,8 @@
     display: block;
     width: 100%;
     margin-bottom: 1.5rem;
-    background-color: var(--block-color);
-    border-radius: var(--border-radius);
+    background-color: #2f3050;
+    border-radius: 20px;
     padding: 20px;
     position: relative;
 }

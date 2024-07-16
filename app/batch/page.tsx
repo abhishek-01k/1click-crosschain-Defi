@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ActionBlock from '../../components/action-block';
 import { ACTIONS, ProtocolNames } from '../../constants/constants';
-
 import styles from '@/styles/batch.module.css';
 import { Reorder } from "framer-motion";
 
@@ -59,7 +58,6 @@ const Batch = () => {
     return (
       <div className={styles.container}>
 
-        <h2 className='text-red-400'> kamakl </h2>
         <Reorder.Group
           as="ul"
           className={styles.actionsWrapper}

@@ -22,7 +22,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {ChainflipList} from "@swapkit/tokens";
 
-const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChange, setBatchActions }) => {
+const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChange, setBatchActions } : any) => {
   const x = useMotionValue(0);
   const xPositions = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
   const [xPos, setXPos] = useState(x);
@@ -30,7 +30,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   const [blockedAction, setBlockedAction] = useState(false);
 
   const [currentActionName, setCurrentActionName] = useState(actionName || ACTIONS['ADD_LIQUIDITY'].type);
-  const [currentProtocolName, setProtocolName] = useState(protocolName || PROTOCOLS['KRIYADEX'].name);
+  const [currentProtocolName, setProtocolName] = useState(protocolName || PROTOCOLS['Mayochain'].name);
 
   const [selectedTokenFrom, setSelectedTokenFrom] = useState<any>(SELECTABLE_TOKENS[0]);
   const [selectedTokenTo, setSelectedTokenTo] = useState<any>(SELECTABLE_TOKENS[1]);
@@ -123,7 +123,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     const sellAmountValue = Number(event.target.value);
     console.log("Sell Amount valueeee>>>>>", sellAmountValue, event.target.value, currentProtocolName, currentProtocolName === PROTOCOLS['NAVI'].name,);
     setSellAmount(sellAmountValue);
-    if (currentProtocolName == PROTOCOLS['NAVI'].name) {
+    if (currentProtocolName == PROTOCOLS['THORCHAIN'].name) {
 
       console.log("1");
       //TODO: See if the below code works or not
@@ -181,7 +181,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
       //       console.error('Error:', error);
       //     });
       // }
-    } else if (currentProtocolName == PROTOCOLS[''].name) {
+    } else if (currentProtocolName == PROTOCOLS['MAYOCHAIN'].name) {
 
       console.log("2");
 
@@ -346,9 +346,8 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
         </div>
 
         <Button disabled={blockedAction} onClick={handleLockAction}>Lock This Action 🔒</Button>
-
+        <Button onClick={handleGetLockedBlocksData}>Execute Locked Blocks 🔥</Button>
       </div>
-      <Button onClick={handleGetLockedBlocksData}>Execute Locked Blocks 🔥</Button>
     </div>
   );
 };

@@ -9,14 +9,24 @@ export enum ActionTypes {
 }
 
 export enum ProtocolNames {
-  ChainFlip,
-  Mayochain,
-  Thorchain
+  CHAINFLIP,
+  MAYOCHAIN,
+  THORCHAIN
 }
 
 export const PROTOCOLS: { [key in keyof typeof ProtocolNames]?: any} = {
-  [ProtocolNames.ChainFlip]: {
-    name: 'ChainFlip',
+  [ProtocolNames.CHAINFLIP]: {
+    name: 'CHAINFLIP',
+    address: '0x818e6fecd516ecc3849daf6845e3ec868087b755',
+    abi: []
+  },
+  [ProtocolNames.MAYOCHAIN]: {
+    name: 'MAYOCHAIN',
+    address: '0x818e6fecd516ecc3849daf6845e3ec868087b755',
+    abi: []
+  },
+  [ProtocolNames.THORCHAIN]: {
+    name: 'THORCHAIN',
     address: '0x818e6fecd516ecc3849daf6845e3ec868087b755',
     abi: []
   }
@@ -28,39 +38,39 @@ export const ACTIONS: { [key in keyof typeof ActionTypes]?: any} = {
     type: ActionTypes.ADD_LIQUIDITY,
     name: 'Add Liquidity',
     availableProtocols: [
-      ProtocolNames.ChainFlip,
-      ProtocolNames.Mayochain
+      ProtocolNames.CHAINFLIP,
+      ProtocolNames.MAYOCHAIN
     ],
   },
   [ActionTypes.REMOVE_LIQUIDITY]: {
     type: ActionTypes.REMOVE_LIQUIDITY,
     name: 'Remove Liquidity',
     availableProtocols: [
-      ProtocolNames.ChainFlip,
-      ProtocolNames.Mayochain
+      ProtocolNames.CHAINFLIP,
+      ProtocolNames.MAYOCHAIN
     ],
   },
   [ActionTypes.APPROVE]: {
     type: ActionTypes.APPROVE,
     name: 'Approve',
     availableProtocols: [
-      ProtocolNames.ChainFlip,
-      ProtocolNames.Mayochain
+      ProtocolNames.CHAINFLIP,
+      ProtocolNames.MAYOCHAIN
     ],
   },
   [ActionTypes.SWAP]: {
     type: ActionTypes.SWAP,
     name: 'Swap',
     availableProtocols: [
-      ProtocolNames.ChainFlip,
-      ProtocolNames.Thorchain
+      ProtocolNames.CHAINFLIP,
+      ProtocolNames.THORCHAIN
     ],
   },
   [ActionTypes.REVOKE_APPROVAL]: {
     type: ActionTypes.REVOKE_APPROVAL,
     availableProtocols: [
-      ProtocolNames.ChainFlip,
-      ProtocolNames.Thorchain
+      ProtocolNames.CHAINFLIP,
+      ProtocolNames.THORCHAIN
     ],
   },
   [ActionTypes.TRANSFER]: {

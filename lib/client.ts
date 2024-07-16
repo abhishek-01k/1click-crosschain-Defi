@@ -22,7 +22,6 @@ const wallets = {
   ...coinbaseWallet,
   ...keplrWallet,
   ...keystoreWallet,
-  ...talismanWallet,
   ...walletconnectWallet,
   ...xdefiWallet,
 };
