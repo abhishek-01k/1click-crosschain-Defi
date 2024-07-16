@@ -1,13 +1,16 @@
 "use client"
 import React from 'react';
-import { ThirdwebProvider } from "thirdweb/react";
+import { Provider as JotaiProvider } from "jotai";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
     return (
-        <ThirdwebProvider>
-            {children}
-        </ThirdwebProvider>
+        <JotaiProvider>
+            <TooltipProvider>
+                {children}
+            </TooltipProvider>
+        </JotaiProvider>
     );
 };
 

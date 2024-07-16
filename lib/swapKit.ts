@@ -2,7 +2,12 @@
 
 import { type AssetValue, type Chain, WalletOption } from "@swapkit/helpers";
 import { atom, useAtom } from "jotai";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { evmWallet } from "@swapkit/wallet-evm-extensions";
+import { coinbaseWallet } from "@swapkit/wallet-coinbase";
+import { keplrWallet } from "@swapkit/wallet-keplr";
+import { walletconnectWallet } from "@swapkit/wallet-wc";
+import { xdefiWallet } from "@swapkit/wallet-xdefi";
 
 type Todo = any;
 
@@ -28,7 +33,16 @@ export const useSwapKit = () => {
       const { SwapKit } = await import("@swapkit/core");
       const { ChainflipPlugin } = await import("@swapkit/plugin-chainflip");
       const { ThorchainPlugin, MayachainPlugin } = await import("@swapkit/plugin-thorchain");
-      const { wallets } = await import("@swapkit/wallets");
+
+      const wallets = {
+        ...evmWallet,
+        ...coinbaseWallet,
+        ...keplrWallet,
+        ...walletconnectWallet,
+        ...xdefiWallet,
+      };
+
+      console.log(wallets,"wallets");
 
       const swapKitClient = SwapKit({
         config: {
@@ -52,6 +66,7 @@ export const useSwapKit = () => {
         plugins: { ...ThorchainPlugin, ...ChainflipPlugin, ...MayachainPlugin },
       });
 
+      console.log(swapKitClient,"swapkitclient");
       setSwapKit(swapKitClient);
     };
 
@@ -82,9 +97,14 @@ export const useSwapKit = () => {
 
   const connectWallet = useCallback(
     (option: WalletOption, chains: Chain[]) => {
+      console.log(connectWallet,"connectWallet",swapKit);
       switch (option) {
         case WalletOption.XDEFI: {
           swapKit?.connectXDEFI(chains);
+          break;
+        }
+        case WalletOption.METAMASK: {
+          swapKit?.connectMetaMask(chains);
           break;
         }
 

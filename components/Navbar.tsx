@@ -19,17 +19,17 @@ const items = [
 
 interface NavigationBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const AllChains = [...UTXOChains, ...EVMChains, ...CosmosChains];
+const AllChains: readonly Chain[] = [...UTXOChains, ...EVMChains, ...CosmosChains] as const;
 
-const allowedChainsByWallet = {
+const allowedChainsByWallet: Record<WalletOption, readonly Chain[]> = {
   [WalletOption.XDEFI]: AllChains.filter((chain) => ![Chain.Dash].includes(chain)),
   [WalletOption.METAMASK]: EVMChains,
   [WalletOption.KEPLR]: CosmosChains,
-} as const;
+};
 
 export default function Navbar({ className, ...props }: NavigationBarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedChains, setSelectedChains] = useState<Chain[]>([]);
+  const [selectedChains, setSelectedChains] = useState<readonly Chain[]>([]);
   const { walletType, disconnectWallet, isWalletConnected, connectWallet } = useSwapKit();
   const pathname = usePathname();
 
@@ -43,7 +43,7 @@ export default function Navbar({ className, ...props }: NavigationBarProps) {
 
   const checkWalletDisabled = useCallback(
     (option: WalletOption) => {
-      const allowedChains = allowedChainsByWallet[option] as Chain[];
+      const allowedChains = allowedChainsByWallet[option];
 
       if (!(allowedChains?.length && selectedChains?.length)) return false;
 
@@ -53,10 +53,10 @@ export default function Navbar({ className, ...props }: NavigationBarProps) {
   );
 
   const handleWalletSelect = useCallback(
-    (option: WalletOption) => {
+    async (option: WalletOption) => {
       setIsDropdownOpen(false);
 
-      const allowedChains = allowedChainsByWallet[option] as Chain[];
+      const allowedChains = allowedChainsByWallet[option];
 
       if (!allowedChains.length || checkWalletDisabled(option)) return;
 
@@ -65,9 +65,13 @@ export default function Navbar({ className, ...props }: NavigationBarProps) {
       } else if (isWalletConnected) {
         disconnectWallet();
       } else {
-        connectWallet(option, selectedChains).catch((err) => {
+        try {
+          console.log("connectWallet", option, selectedChains);
+          const a = await connectWallet(option, selectedChains);
+          console.log(a,"result")
+        } catch (err) {
           console.error("Failed to connect wallet:", err);
-        });
+        }
       }
     },
     [checkWalletDisabled, isWalletConnected, disconnectWallet, connectWallet, selectedChains],
