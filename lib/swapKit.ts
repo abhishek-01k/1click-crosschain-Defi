@@ -1,5 +1,6 @@
-import { type AssetValue, type Chain, WalletOption } from "@swapkit/helpers";
+"use client";
 
+import { type AssetValue, type Chain, WalletOption } from "@swapkit/helpers";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
 
@@ -11,6 +12,11 @@ const walletState = atom<{ connected: boolean; type: WalletOption | null }>({
   connected: false,
   type: null,
 });
+
+if (typeof global === "undefined") {
+  (window as any).global = window;
+}
+
 
 export const useSwapKit = () => {
   const [swapKit, setSwapKit] = useAtom(swapKitAtom);

@@ -1,37 +1,167 @@
-import { cn } from "@/lib/utils";
+"use client";
+
+import { Chain, CosmosChains, EVMChains, UTXOChains, WalletOption } from "@swapkit/helpers";
+import { Power, PowerOff } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { createThirdwebClient } from "thirdweb";
-import { ConnectButton } from "thirdweb/react";
+import { usePathname } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useSwapKit } from "@/lib/swapKit";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-const Navbar = () => {
+const items = [
+  { name: "Swap", href: "/swap" },
+  { name: "Batch", href: "/batch" },
+];
 
-    const client = createThirdwebClient({ clientId: "9dbaca0c09760c29ab2aec57240823c9" });
+interface NavigationBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
+const AllChains = [...UTXOChains, ...EVMChains, ...CosmosChains];
+
+const allowedChainsByWallet = {
+  [WalletOption.XDEFI]: AllChains.filter((chain) => ![Chain.Dash].includes(chain)),
+  [WalletOption.METAMASK]: EVMChains,
+  [WalletOption.KEPLR]: CosmosChains,
+} as const;
+
+export default function Navbar({ className, ...props }: NavigationBarProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedChains, setSelectedChains] = useState<Chain[]>([]);
+  const { walletType, disconnectWallet, isWalletConnected, connectWallet } = useSwapKit();
+  const pathname = usePathname();
+
+  const handleChainSelect = (chain: Chain) => (checked: boolean) => {
+    if (checked) {
+      setSelectedChains((prev) => [...prev, chain]);
+    } else {
+      setSelectedChains((prev) => prev.filter((c) => c !== chain));
+    }
+  };
+
+  const checkWalletDisabled = useCallback(
+    (option: WalletOption) => {
+      const allowedChains = allowedChainsByWallet[option] as Chain[];
+
+      if (!(allowedChains?.length && selectedChains?.length)) return false;
+
+      return !selectedChains.every((chain) => allowedChains.includes(chain));
+    },
+    [selectedChains],
+  );
+
+  const handleWalletSelect = useCallback(
+    (option: WalletOption) => {
+      setIsDropdownOpen(false);
+
+      const allowedChains = allowedChainsByWallet[option] as Chain[];
+
+      if (!allowedChains.length || checkWalletDisabled(option)) return;
+
+      if (selectedChains.length === 0) {
+        setSelectedChains(allowedChains);
+      } else if (isWalletConnected) {
+        disconnectWallet();
+      } else {
+        connectWallet(option, selectedChains).catch((err) => {
+          console.error("Failed to connect wallet:", err);
+        });
+      }
+    },
+    [checkWalletDisabled, isWalletConnected, disconnectWallet, connectWallet, selectedChains],
+  );
 
   return (
-    <>
-        <div className="relative self-center flex w-full max-w-[1217px] items-center justify-between gap-5">
-          <Link
-            href={"/"}
-            className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400 self-center my-auto"
-          >
-             Cross-Chain
-          </Link>
-          <div className="hidden items-center xl:flex gap-0">
+    <ScrollArea className="max-w-[600px] lg:max-w-none pt-4 mb-4 border-b">
+      <div className="flex justify-between flex-row">
+        <div className={cn("mb-4 flex items-center", className)} {...props}>
+          {items.map(({ href, name }) => (
             <Link
-              href={"/batch"}
-              className="text-black text-base self-stretch whitespace-nowrap justify-center items-center bg-white w-[145px] max-w-full px-9 py-4 rounded-md max-md:px-5"
+              href={href}
+              key={href}
+              className={cn(
+                "flex h-10 items-center justify-center rounded-full px-4 text-center transition-colors hover:text-primary",
+                pathname === href ? "bg-muted font-medium text-primary" : "text-muted-foreground",
+              )}
             >
-              batch
+              {name}
             </Link>
-          </div>
-          <ConnectButton client={client} />
-
+          ))}
         </div>
-    </>
-  );
-};
 
-export default Navbar;
+        <DropdownMenu onOpenChange={setIsDropdownOpen} open={isDropdownOpen}>
+          {isWalletConnected ? (
+            <Button onClick={disconnectWallet} asChild variant="ghost" className="space-x-2">
+              <div>
+                <PowerOff size={18} className="text-red-400" />
+                <span>{`Disconnect (${walletType})`}</span>
+              </div>
+            </Button>
+          ) : (
+            <DropdownMenuTrigger>
+              <Button asChild variant="ghost" className="space-x-2">
+                <div>
+                  <Power size={18} className="text-slate-400" />
+                  <span>Connect Wallet</span>
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+          )}
+
+          <DropdownMenuContent className="max-w-[400px] z-auto">
+            <div className="flex flex-row flex-wrap bg-slate-900 p-4 gap-3">
+              {AllChains.map((chain) => (
+                <div key={chain} className="flex w-[70px] justify-between items-center">
+                  <span
+                    className={
+                      selectedChains.includes(chain) ? "text-primary" : "text-muted-foreground"
+                    }
+                  >
+                    {chain}
+                  </span>
+
+                  <Checkbox
+                    checked={selectedChains.includes(chain)}
+                    onCheckedChange={handleChainSelect(chain)}
+                    key={chain}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-slate-800 p-4">
+              {[WalletOption.XDEFI, WalletOption.METAMASK, WalletOption.KEPLR].map((option) => (
+                <div key={option}>
+                  {selectedChains.length && !checkWalletDisabled(option) ? (
+                    <Button
+                      onClick={() => handleWalletSelect(option)}
+                      variant="ghost"
+                      className="text-primary p-2"
+                    >
+                      Connect
+                    </Button>
+                  ) : null}
+
+                  <Button
+                    variant={
+                      selectedChains.length && !checkWalletDisabled(option) ? "default" : "ghost"
+                    }
+                    className={checkWalletDisabled(option) ? "text-muted-foreground" : ""}
+                    disabled={checkWalletDisabled(option)}
+                    onClick={() => handleWalletSelect(option)}
+                  >
+                    {option}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <ScrollBar orientation="horizontal" className="invisible" />
+    </ScrollArea>
+  );
+}
