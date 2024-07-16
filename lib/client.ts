@@ -4,8 +4,6 @@ import { ChainflipPlugin } from "@swapkit/plugin-chainflip";
 import { evmWallet } from "@swapkit/wallet-evm-extensions";
 import { coinbaseWallet } from "@swapkit/wallet-coinbase";
 import { keplrWallet } from "@swapkit/wallet-keplr";
-import { keystoreWallet } from "@swapkit/wallet-keystore";
-import { talismanWallet } from "@swapkit/wallet-talisman";
 import { walletconnectWallet } from "@swapkit/wallet-wc";
 import { xdefiWallet } from "@swapkit/wallet-xdefi";
 
@@ -21,7 +19,6 @@ const wallets = {
   ...evmWallet,
   ...coinbaseWallet,
   ...keplrWallet,
-  ...keystoreWallet,
   ...walletconnectWallet,
   ...xdefiWallet,
 };
