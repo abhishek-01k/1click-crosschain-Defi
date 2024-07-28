@@ -120,7 +120,7 @@ export default function Component() {
                   <CardHeader>
                     <CardTitle>SwapKit API and SDK</CardTitle>
                     <CardDescription>
-                      Leverage SwapKit's powerful API and SDK to seamlessly integrate cross-chain swaps and liquidity
+                      Leverage SwapKit&apos;s powerful API and SDK to seamlessly integrate cross-chain swaps and liquidity
                       management.
                     </CardDescription>
                   </CardHeader>
@@ -129,7 +129,7 @@ export default function Component() {
                   <CardHeader>
                     <CardTitle>ThorSwap</CardTitle>
                     <CardDescription>
-                      Tap into ThorSwap's extensive liquidity pools and cross-chain bridging capabilities.
+                      Tap into ThorSwap&apos;s extensive liquidity pools and cross-chain bridging capabilities.
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -137,7 +137,7 @@ export default function Component() {
                   <CardHeader>
                     <CardTitle>ChainFlip</CardTitle>
                     <CardDescription>
-                      Utilize ChainFlip's decentralized cross-chain exchange to execute your strategies.
+                      Utilize ChainFlip&apos;s decentralized cross-chain exchange to execute your strategies.
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -145,7 +145,7 @@ export default function Component() {
                   <CardHeader>
                     <CardTitle>MayoChain</CardTitle>
                     <CardDescription>
-                      Leverage MayoChain's advanced cross-chain capabilities to expand your DeFi horizons.
+                      Leverage MayoChain&apos;s advanced cross-chain capabilities to expand your DeFi horizons.
                     </CardDescription>
                   </CardHeader>
                 </Card>
