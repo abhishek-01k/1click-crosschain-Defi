@@ -72,7 +72,7 @@ const SwapInput = () => {
             } catch (error) {
                 console.error(error);
                 toast({
-                    title: error.message,
+                    title: "failed to get quote",
                     description: "Failed to get Quote",
                 });
             }
