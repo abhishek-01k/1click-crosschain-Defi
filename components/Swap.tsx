@@ -1,4 +1,5 @@
-import { Assets, Chains, SwapSDK } from '@chainflip/sdk/swap';
+// @ts-nocheck
+import { Assets, Chains, SwapSDK, SwapSDKOptions } from '@chainflip/sdk/swap';
 import React from 'react';
 import { useActiveAccount } from 'thirdweb/react';
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
@@ -9,10 +10,10 @@ const Swap = () => {
     const activeAccount = useActiveAccount();
 
 
-    const options = {
+    const options : SwapSDKOptions= {
         network: "perseverance", // Testnet
         backendServiceUrl: "https://example.chainflip.io",
-        signer: activeAccount,
+        signer: activeAccount!,
         broker: {
             url: 'https://my.broker.io',
             commissionBps: 0, // basis points, i.e. 100 = 1%

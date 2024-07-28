@@ -76,7 +76,7 @@ const SDKPage = () => {
     } catch (error) {
       console.error(error);
       toast({
-        title: error.message,
+        title: "Error",
         description: "Failed to get Quote",
       });
     }
@@ -168,7 +168,7 @@ const SDKPage = () => {
                 <Input
                   value={sellamount}
                   onChange={(e) => {
-                    setSellAmount(e.target.value);
+                    setSellAmount(Number(e.target.value));
                   }}
                   placeholder="Amount"
                 />

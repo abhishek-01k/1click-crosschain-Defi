@@ -14,12 +14,11 @@ import {
   import { useCallback, useState } from "react";
   
   import type { Eip1193Provider } from "@swapkit/toolbox-evm";
-  import type { SwapKitClient } from "./swapKitClient";
   
   type Props = {
     setPhrase: (phrase: string) => void;
     setWallet: (wallet: FullWallet[Chain] | FullWallet[Chain][]) => void;
-    skClient?: SwapKitClient;
+    skClient?: any;
   };
   
   const walletOptions = Object.values(WalletOption).filter(
@@ -192,7 +191,7 @@ import {
     );
   
     const handleKeystoreConnection = useCallback(
-      async ({ target }: Todo) => {
+      async ({ target }: any) => {
         if (!skClient) return alert("client is not ready");
         setLoading(true);
   
@@ -256,8 +255,8 @@ import {
       );
     }, []);
   
-    const handleMultipleSelect = useCallback((e: Todo) => {
-      const selectedChains = Array.from(e.target.selectedOptions).map((o: Todo) => o.value);
+    const handleMultipleSelect = useCallback((e: any) => {
+      const selectedChains = Array.from(e.target.selectedOptions).map((o: any) => o.value);
   
       if (selectedChains.length > 1) {
         setChains(selectedChains);

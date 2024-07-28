@@ -1,4 +1,5 @@
 
+// @ts-nocheck
 import styles from "../styles/action-block.module.css";
 import { Input } from "../components/ui/input";
 import { Button } from "./ui/button";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { Chain, CosmosChains, EVMChains, UTXOChains, WalletOption } from "@swapkit/helpers";

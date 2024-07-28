@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProviderName } from '@swapkit/helpers';
 import React, { useState } from 'react';
-import Web3 from 'web3';
 
 
 type QuoteParams = {
