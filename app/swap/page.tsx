@@ -41,6 +41,9 @@ export default function Swap() {
     };
   }, [balances]);
 
+  console.log("Chains >>>",chains,balanceGroupedByChain);
+  
+
   return (
     <Card className={cn("w-[600px]")}>
       <CardHeader>

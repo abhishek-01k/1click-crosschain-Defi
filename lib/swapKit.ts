@@ -66,6 +66,8 @@ export const useSwapKit = () => {
         plugins: { ...ThorchainPlugin, ...ChainflipPlugin, ...MayachainPlugin },
       });
 
+      // 3QWjbQ8EwLoznHNMSrmYMRcDXcHSsckTsV
+
       // const res = await swapKitClient.chainflip;
       // const txn = await res.swap({
       //   pluginName: 'chainflip',
