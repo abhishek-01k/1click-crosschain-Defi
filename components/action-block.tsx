@@ -1,4 +1,3 @@
-
 // @ts-nocheck
 import styles from "../styles/action-block.module.css";
 import { Input } from "../components/ui/input";
@@ -12,7 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ACTIONS, ActionType, ProtocolName, PROTOCOLS } from '../constants/constants';
+import {
+  ACTIONS,
+  ActionType,
+  ProtocolName,
+  PROTOCOLS,
+} from "../constants/constants";
 import TokenChooser from "./token-chooser";
 import { IoIosAddCircleOutline, IoIosArrowDown } from "react-icons/io";
 import { CiCircleMinus } from "react-icons/ci";
@@ -24,18 +28,32 @@ import { cn } from "@/lib/utils";
 import { ChainflipList } from "@swapkit/tokens";
 import SwapInput from "./swap/SwapInput";
 
-const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChange, setBatchActions }: any) => {
+const ActionBlock = ({
+  actionName,
+  protocolName,
+  onActionChange,
+  onProtocolChange,
+  setBatchActions,
+}: any) => {
   const x = useMotionValue(0);
   const xPositions = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
   const [xPos, setXPos] = useState(x);
 
   const [blockedAction, setBlockedAction] = useState(false);
 
-  const [currentActionName, setCurrentActionName] = useState(actionName || ACTIONS['ADD_LIQUIDITY'].type);
-  const [currentProtocolName, setProtocolName] = useState(protocolName || PROTOCOLS['MAYOCHAIN'].name);
+  const [currentActionName, setCurrentActionName] = useState(
+    actionName || ACTIONS["ADD_LIQUIDITY"].type
+  );
+  const [currentProtocolName, setProtocolName] = useState(
+    protocolName || PROTOCOLS["MAYOCHAIN"].name
+  );
 
-  const [selectedTokenFrom, setSelectedTokenFrom] = useState<any>(SELECTABLE_TOKENS[0]);
-  const [selectedTokenTo, setSelectedTokenTo] = useState<any>(SELECTABLE_TOKENS[1]);
+  const [selectedTokenFrom, setSelectedTokenFrom] = useState<any>(
+    SELECTABLE_TOKENS[0]
+  );
+  const [selectedTokenTo, setSelectedTokenTo] = useState<any>(
+    SELECTABLE_TOKENS[1]
+  );
 
   const [amountFrom, setAmountFrom] = useState("");
   const [amountTo, setAmountTo] = useState("");
@@ -43,12 +61,13 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   const [sellAmount, setSellAmount] = useState<number>();
   const [quote, setQuote] = useState<string>();
 
-
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
 
-  const [availableProtocols, setAvailableProtocols] = useState(Object.keys(PROTOCOLS));
+  const [availableProtocols, setAvailableProtocols] = useState(
+    Object.keys(PROTOCOLS)
+  );
 
   const wallet = "0x123";
 
@@ -63,8 +82,8 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
         selectedTokenFrom: selectedTokenFrom,
         selectedTokenTo: selectedTokenTo,
         sellAmount: sellAmount,
-        quote: quote
-      }
+        quote: quote,
+      },
     };
     // setLockedBlocks([...lockedBlocks, newLockedBlock]);
     // // Clear current state values
@@ -78,17 +97,15 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     // setLockedBlocks(prevBlocks => [...prevBlocks, newLockedBlock]);
 
     setBlockedAction(true);
-    console.log("newLockedBlock", newLockedBlock)
+    console.log("newLockedBlock", newLockedBlock);
 
-    setBatchActions(prevActions => {
+    setBatchActions((prevActions) => {
       if (prevActions) {
-        return [...prevActions, newLockedBlock]
+        return [...prevActions, newLockedBlock];
       } else {
-        return [newLockedBlock]
+        return [newLockedBlock];
       }
-    }
-    );
-
+    });
   };
 
   const handleGetLockedBlocksData = () => {
@@ -97,7 +114,6 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   };
 
   const handleActionChange = (value: ActionType) => {
-
     // console.log("Value in Action change", value);
 
     // // const selectedActionKey = event.target.value;
@@ -108,7 +124,6 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     setCurrentActionName(value);
     const availableProtocols = ACTIONS[value].availableProtocols;
     setAvailableProtocols(availableProtocols);
-
 
     // onActionChange(selectedActionKey);
   };
@@ -129,12 +144,17 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     if (!wallet) return;
-    setErrorMessage('');
+    setErrorMessage("");
     const sellAmountValue = Number(event.target.value);
-    console.log("Sell Amount valueeee>>>>>", sellAmountValue, event.target.value, currentProtocolName, currentProtocolName === PROTOCOLS['CHAINFLIP'].name,);
+    console.log(
+      "Sell Amount valueeee>>>>>",
+      sellAmountValue,
+      event.target.value,
+      currentProtocolName,
+      currentProtocolName === PROTOCOLS["CHAINFLIP"].name
+    );
     setSellAmount(sellAmountValue);
-    if (currentProtocolName == PROTOCOLS['THORCHAIN'].name) {
-
+    if (currentProtocolName == PROTOCOLS["THORCHAIN"].name) {
       console.log("1");
       //TODO: See if the below code works or not
 
@@ -191,8 +211,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
       //       console.error('Error:', error);
       //     });
       // }
-    } else if (currentProtocolName == PROTOCOLS['MAYOCHAIN'].name) {
-
+    } else if (currentProtocolName == PROTOCOLS["MAYOCHAIN"].name) {
       console.log("2");
 
       const sellAmountValue = Number(event.target.value);
@@ -201,72 +220,75 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     // setLoading(true);
   };
 
-
+  console.log(currentActionName, currentProtocolName, "currentActionName");
   const handleSwap = async () => {
     // if (!wallet || !sellAmount || !quote) return;
-    console.log(currentProtocolName, "swap with")
-    setErrorMessage('');
-    setSuccessMessage('');
+    console.log(currentProtocolName, "swap with");
+    setErrorMessage("");
+    setSuccessMessage("");
     setLoading(true);
     if (protocolName === "NAVIPROTOCOL") {
-
-
       try {
-
       } catch (error) {
-        console.error('Error during swap:', error);
+        console.error("Error during swap:", error);
       }
     } else if (currentProtocolName === "KRIYADEX") {
       try {
-
         const amountinstring = sellAmount?.toString();
         console.log(selectedTokenFrom.type, selectedTokenTo.type, true, "sd");
-        console.log(`${selectedTokenFrom.symbol}-${selectedTokenTo.symbol}`, "pool");
-
-
+        console.log(
+          `${selectedTokenFrom.symbol}-${selectedTokenTo.symbol}`,
+          "pool"
+        );
       } catch (error) {
-        console.error('Error during swap:', error);
+        console.error("Error during swap:", error);
       }
     } else if (currentProtocolName === "") {
-      console.log(selectedTokenFrom, "yoi", selectedTokenTo)
-
+      console.log(selectedTokenFrom, "yoi", selectedTokenTo);
 
       const slippage = 2;
 
-      console.log(sellAmount, "sellAmount")
+      console.log(sellAmount, "sellAmount");
       const amountinstring = sellAmount?.toString();
-      console.log(selectedTokenFrom.type, selectedTokenTo.type, amountinstring, abortQuerySmartRef.current.signal, true, "sd");
-
+      console.log(
+        selectedTokenFrom.type,
+        selectedTokenTo.type,
+        amountinstring,
+        abortQuerySmartRef.current.signal,
+        true,
+        "sd"
+      );
     }
   };
 
-  useEffect(() => {
-
-  }, [x]);
+  useEffect(() => {}, [x]);
 
   const handlesubmit = async (actionname: string) => {
-    console.log(actionName, "Action name", currentActionName)
+    console.log(actionName, "Action name", currentActionName);
     if (currentActionName == "SWAP") {
       handleSwap();
     } else if (currentActionName == "Add_Liquidity") {
-
     }
-  }
+  };
 
   return (
-    <div className="border rounded-lg w-[100%] min-w-[450px] p-8" >
+    <div className="border rounded-lg w-[100%] min-w-[450px] p-8">
       <p className="text-xl font-bold bg-gradient-to-r from-[rgb(255,0,128)] to-[#7928CA] dark:from-[#7928CA] dark:to-[#FF0080] bg-clip-text text-transparent">
         {currentProtocolName}
       </p>
 
-      <div className='text-xl font-semibold tracking-tight'>
+      <div className="text-xl font-semibold tracking-tight">
         <h1 className="font-bold tracking-tighter text-xl md:text-2xl">
           {currentActionName}
         </h1>
       </div>
 
       <div className="flex flex-col gap-8 mt-12 ">
-        <Select disabled={blockedAction} onValueChange={handleActionChange} value={currentActionName}>
+        <Select
+          disabled={blockedAction}
+          onValueChange={handleActionChange}
+          value={currentActionName}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select option" />
           </SelectTrigger>
@@ -276,13 +298,16 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
                 <div key={action.type}>
                   <SelectItem value={action.type}>{action.name}</SelectItem>
                 </div>
-              )
-              )}
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
 
-        <Select disabled={blockedAction} onValueChange={handleProtocolChange} value={currentProtocolName}>
+        <Select
+          disabled={blockedAction}
+          onValueChange={handleProtocolChange}
+          value={currentProtocolName}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select Protocol" />
           </SelectTrigger>
@@ -290,19 +315,17 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
             <SelectGroup>
               {(availableProtocols as ProtocolName[]).map((protocol) => (
                 <div key={protocol}>
-                  <SelectItem value={protocol}>{PROTOCOLS[protocol].name}</SelectItem>
+                  <SelectItem value={protocol}>
+                    {PROTOCOLS[protocol].name}
+                  </SelectItem>
                 </div>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
 
-        {currentActionName === ACTIONS['SWAP'].type && <SwapInput />}
-
+        {currentActionName === ACTIONS["SWAP"].type && <SwapInput />}
       </div>
-
-
-
 
       <div className="flex flex-col gap-8 mt-8">
         {/* <div className={styles.actionInputField}>
@@ -326,22 +349,39 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
           />
         </div> */}
 
-
         {/* {currentActionName == "Add_Liquidity" || currentActionName == "Remove_Liquidity" ? <IoIosAddCircleOutline className="w-10 h-10" color={"#fff"} /> : <IoIosArrowDown className="w-10 h-10" color={"#fff"} />} */}
 
         {/* Don't display this when the action is related to FlashLoans */}
 
         <div className="w-[100%]">
-          <Button disabled={loading} className="w-[100%]" variant='default' onClick={() => handlesubmit(currentActionName)}>
-            {loading ? 'Loading....' : currentActionName}
+          <Button
+            disabled={loading}
+            className="w-[100%]"
+            variant="default"
+            onClick={() => handlesubmit(currentActionName)}
+          >
+            {loading ? "Loading...." : currentActionName}
           </Button>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          {successMessage && <p style={{ color: 'green' }}>Success</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          {successMessage && <p style={{ color: "green" }}>Success</p>}
         </div>
 
         <div className="flex gap-8">
-          <Button variant='secondary' className="hover:bg-slate-400" disabled={blockedAction} onClick={handleLockAction}>Lock This Action 🔒</Button>
-          <Button variant='secondary' className="bg-green-600 text-white hover:bg-green-900" onClick={handleGetLockedBlocksData}>Execute Locked Blocks 🔥</Button>
+          <Button
+            variant="secondary"
+            className="hover:bg-slate-400"
+            disabled={blockedAction}
+            onClick={handleLockAction}
+          >
+            Lock This Action 🔒
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-green-600 text-white hover:bg-green-900"
+            onClick={handleGetLockedBlocksData}
+          >
+            Execute Locked Blocks 🔥
+          </Button>
         </div>
       </div>
     </div>
