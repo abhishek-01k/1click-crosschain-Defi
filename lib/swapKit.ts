@@ -305,6 +305,7 @@ export const useSwapKit = () => {
 
       console.log(swapKitClient, "swapkitclient");
       setSwapKit(swapKitClient);
+
     };
 
     loadSwapKit();
@@ -334,14 +335,14 @@ export const useSwapKit = () => {
 
   const connectWallet = useCallback(
     (option: WalletOption, chains: Chain[]) => {
-      console.log(connectWallet, "connectWallet", swapKit);
+      console.log("connectWallet is called", swapKit, chains);
       switch (option) {
         case WalletOption.XDEFI: {
           swapKit?.connectXDEFI(chains);
           break;
         }
         case WalletOption.METAMASK: {
-          swapKit?.connectMetaMask(chains);
+          swapKit?.connectEVMWallet(chains);
           break;
         }
 

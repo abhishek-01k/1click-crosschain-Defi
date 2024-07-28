@@ -11,13 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ThemeToggle } from "./ThemeToggle";
 
 const items = [
   { name: "Swap", href: "/swap" },
   { name: "Batch", href: "/batch" },
 ];
 
-interface NavigationBarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface NavigationBarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const AllChains: readonly Chain[] = [...UTXOChains, ...EVMChains, ...CosmosChains] as const;
 
@@ -68,7 +69,7 @@ export default function Navbar({ className, ...props }: NavigationBarProps) {
         try {
           console.log("connectWallet", option, selectedChains);
           const a = await connectWallet(option, selectedChains);
-          console.log(a,"result")
+          console.log(a, "result")
         } catch (err) {
           console.error("Failed to connect wallet:", err);
         }
@@ -163,7 +164,10 @@ export default function Navbar({ className, ...props }: NavigationBarProps) {
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
+        <ThemeToggle />
       </div>
+
+
 
       <ScrollBar orientation="horizontal" className="invisible" />
     </ScrollArea>

@@ -4,6 +4,8 @@ import "./globals.css";
 import Provider from "./Provider";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThirdwebProvider } from "thirdweb/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +26,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider>
-          <>
-            <Navbar />
-            {children}
-          </>
-        </Provider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+        <ThirdwebProvider>
+          <Provider>
+            <>
+              <Navbar />
+              {children}
+            </>
+          </Provider>
+          </ThirdwebProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

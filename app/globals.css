@@ -8,8 +8,6 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background: linear-gradient(to bottom right, #d4b0ff, #ffa6c9); 
-  /* color: #eaeaea; */
 }
 
 a {
@@ -22,18 +20,17 @@ a {
 }
 
 li {
-    float: left;
-    list-style: none;
+  float: left;
+  list-style: none;
 }
 
 ul {
-    width: 100%;
-    padding: 0;
-    height: 100%;
-    overflow: scroll;
-    display: inline;
-    white-space:nowrap;
-
+  width: 100%;
+  padding: 0;
+  height: 100%;
+  overflow: scroll;
+  display: inline;
+  white-space: nowrap;
 }
 
 @layer base {

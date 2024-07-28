@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ACTIONS, ActionTypes, PROTOCOLS, ProtocolNames } from '../constants/constants';
+import { ACTIONS, ActionType, ProtocolName, PROTOCOLS } from '../constants/constants';
 import TokenChooser from "./token-chooser";
 import { IoIosAddCircleOutline, IoIosArrowDown } from "react-icons/io";
 import { CiCircleMinus } from "react-icons/ci";
@@ -20,9 +20,10 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {ChainflipList} from "@swapkit/tokens";
+import { ChainflipList } from "@swapkit/tokens";
+import SwapInput from "./swap/SwapInput";
 
-const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChange, setBatchActions } : any) => {
+const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChange, setBatchActions }: any) => {
   const x = useMotionValue(0);
   const xPositions = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
   const [xPos, setXPos] = useState(x);
@@ -30,7 +31,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   const [blockedAction, setBlockedAction] = useState(false);
 
   const [currentActionName, setCurrentActionName] = useState(actionName || ACTIONS['ADD_LIQUIDITY'].type);
-  const [currentProtocolName, setProtocolName] = useState(protocolName || PROTOCOLS['Mayochain'].name);
+  const [currentProtocolName, setProtocolName] = useState(protocolName || PROTOCOLS['MAYOCHAIN'].name);
 
   const [selectedTokenFrom, setSelectedTokenFrom] = useState<any>(SELECTABLE_TOKENS[0]);
   const [selectedTokenTo, setSelectedTokenTo] = useState<any>(SELECTABLE_TOKENS[1]);
@@ -46,10 +47,10 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   const [errorMessage, setErrorMessage] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
 
+  const [availableProtocols, setAvailableProtocols] = useState(Object.keys(PROTOCOLS));
 
   const wallet = "0x123";
 
-  console.log(currentActionName,"current action name")
   const [lockedBlocks, setLockedBlocks] = useState([]);
 
   const abortQuerySmartRef = useRef(new AbortController());
@@ -94,12 +95,20 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     console.log("Locked Blocks Data:", lockedBlocks);
   };
 
-  const handleActionChange = (value) => {
+  const handleActionChange = (value: ActionType) => {
 
-    // const selectedActionKey = event.target.value;
-    console.log(currentActionName)
+    // console.log("Value in Action change", value);
+
+    // // const selectedActionKey = event.target.value;
+    // console.log(currentActionName)
+    // setCurrentActionName(value);
+
+    console.log("Value in Action change", value);
     setCurrentActionName(value);
-    
+    const availableProtocols = ACTIONS[value].availableProtocols;
+    setAvailableProtocols(availableProtocols);
+
+
     // onActionChange(selectedActionKey);
   };
 
@@ -121,7 +130,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
     if (!wallet) return;
     setErrorMessage('');
     const sellAmountValue = Number(event.target.value);
-    console.log("Sell Amount valueeee>>>>>", sellAmountValue, event.target.value, currentProtocolName, currentProtocolName === PROTOCOLS['NAVI'].name,);
+    console.log("Sell Amount valueeee>>>>>", sellAmountValue, event.target.value, currentProtocolName, currentProtocolName === PROTOCOLS['CHAINFLIP'].name,);
     setSellAmount(sellAmountValue);
     if (currentProtocolName == PROTOCOLS['THORCHAIN'].name) {
 
@@ -194,12 +203,12 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
 
   const handleSwap = async () => {
     // if (!wallet || !sellAmount || !quote) return;
-    console.log(currentProtocolName,"swap with")
+    console.log(currentProtocolName, "swap with")
     setErrorMessage('');
     setSuccessMessage('');
     setLoading(true);
     if (protocolName === "NAVIPROTOCOL") {
-      
+
 
       try {
 
@@ -210,24 +219,24 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
       try {
 
         const amountinstring = sellAmount?.toString();
-        console.log(selectedTokenFrom.type,selectedTokenTo.type, true,"sd");
-        console.log(`${selectedTokenFrom.symbol}-${selectedTokenTo.symbol}`,"pool");
+        console.log(selectedTokenFrom.type, selectedTokenTo.type, true, "sd");
+        console.log(`${selectedTokenFrom.symbol}-${selectedTokenTo.symbol}`, "pool");
 
 
       } catch (error) {
         console.error('Error during swap:', error);
       }
     } else if (currentProtocolName === "") {
-      console.log(selectedTokenFrom,"yoi",selectedTokenTo)
+      console.log(selectedTokenFrom, "yoi", selectedTokenTo)
 
 
       const slippage = 2;
 
-        console.log(sellAmount,"sellAmount")
-        const amountinstring = sellAmount?.toString();
-        console.log(selectedTokenFrom.type,selectedTokenTo.type,amountinstring,abortQuerySmartRef.current.signal, true,"sd");
-  
-    } 
+      console.log(sellAmount, "sellAmount")
+      const amountinstring = sellAmount?.toString();
+      console.log(selectedTokenFrom.type, selectedTokenTo.type, amountinstring, abortQuerySmartRef.current.signal, true, "sd");
+
+    }
   };
 
   useEffect(() => {
@@ -235,7 +244,7 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   }, [x]);
 
   const handlesubmit = async (actionname: string) => {
-    console.log(actionName,"Action name", currentActionName)
+    console.log(actionName, "Action name", currentActionName)
     if (currentActionName == "SWAP") {
       handleSwap();
     } else if (currentActionName == "Add_Liquidity") {
@@ -244,24 +253,27 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
   }
 
   return (
-    <div className={styles.block} >
-      <p className={styles.protocolName}>{currentProtocolName}</p>
+    <div className="border rounded-lg w-[100%] min-w-[450px] p-8" >
+      <p className="text-xl font-bold bg-gradient-to-r from-[rgb(255,0,128)] to-[#7928CA] dark:from-[#7928CA] dark:to-[#FF0080] bg-clip-text text-transparent">
+        {currentProtocolName}
+      </p>
 
       <div className='text-xl font-semibold tracking-tight'>
-        <h3 className={styles.actionName}>{currentActionName}</h3>
+        <h1 className="font-bold tracking-tighter text-xl md:text-2xl">
+          {currentActionName}
+        </h1>
       </div>
 
       <div className="flex flex-col gap-8 mt-12 ">
         <Select disabled={blockedAction} onValueChange={handleActionChange} value={currentActionName}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select option" />
-            <ChevronDown className="h-4 w-4 opacity-50" />
           </SelectTrigger>
           <SelectContent className="w-full">
             <SelectGroup>
-              {Object.keys(ACTIONS).map((key) => (
-                <div key={key}>
-                  <SelectItem value={key}>{ACTIONS[key].name}</SelectItem>
+              {Object.values(ACTIONS).map((action) => (
+                <div key={action.type}>
+                  <SelectItem value={action.type}>{action.name}</SelectItem>
                 </div>
               )
               )}
@@ -272,23 +284,27 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
         <Select disabled={blockedAction} onValueChange={handleProtocolChange} value={currentProtocolName}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select Protocol" />
-            <ChevronDown className="h-4 w-4 opacity-50" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Object.keys(PROTOCOLS).map((key) => (
-                <div key={key}>
-                  <SelectItem value={key}> {PROTOCOLS[key].name}</SelectItem>
+              {(availableProtocols as ProtocolName[]).map((protocol) => (
+                <div key={protocol}>
+                  <SelectItem value={protocol}>{PROTOCOLS[protocol].name}</SelectItem>
                 </div>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        {currentActionName === ACTIONS['SWAP'].type && <SwapInput />}
+
       </div>
 
 
-      <div className={cn("", styles.actionInputsWrapper)}>
-        <div className={styles.actionInputField}>
+
+
+      <div className="flex flex-col gap-8 mt-8">
+        {/* <div className={styles.actionInputField}>
           <TokenChooser
             blockedAction={blockedAction}
             selectedToken={selectedTokenFrom}
@@ -307,46 +323,25 @@ const ActionBlock = ({ actionName, protocolName, onActionChange, onProtocolChang
             // _focus={{ borderColor: "gray.500" }}
             onChange={handleChangeInput}
           />
-        </div>
+        </div> */}
 
 
-        {currentActionName == "Add_Liquidity" || currentActionName == "Remove_Liquidity" ? <IoIosAddCircleOutline className="w-10 h-10" color={"#fff"} /> : <IoIosArrowDown className="w-10 h-10" color={"#fff"} />}
+        {/* {currentActionName == "Add_Liquidity" || currentActionName == "Remove_Liquidity" ? <IoIosAddCircleOutline className="w-10 h-10" color={"#fff"} /> : <IoIosArrowDown className="w-10 h-10" color={"#fff"} />} */}
 
         {/* Don't display this when the action is related to FlashLoans */}
-        {currentActionName !== ActionTypes.RepayFlashLoan &&
-          currentActionName !== ActionTypes.TakeFlashLoan && (
-            <div className={styles.actionInputField}>
-              <TokenChooser
-                blockedAction={blockedAction}
-                selectedToken={selectedTokenTo}
-                setSelectedToken={setSelectedTokenTo}
-                selectableTokens={selectableTokens}
-              />
-              <Input
-                disabled={blockedAction}
-                readOnly
-                className="flex-1"
-                placeholder="Output amount"
-                color="gray.300"
-                height={"3rem"}
-                // borderRadius="md"
-                // borderColor="gray.300"
-                // _hover={{ borderColor: "gray.500" }}
-                // _focus={{ borderColor: "gray.500" }}
-                value={quote ? quote : ''}
-              />
-            </div>
-          )
-        }
 
-        <div>
-          {loading ? <p style={{ color: 'green' }}>Loading...</p> : <Button style={{ color: 'green' }} onClick={() => handlesubmit(currentActionName)}>{currentActionName}</Button>}
+        <div className="w-[100%]">
+          <Button disabled={loading} className="w-[100%]" variant='default' onClick={() => handlesubmit(currentActionName)}>
+            {loading ? 'Loading....' : currentActionName}
+          </Button>
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           {successMessage && <p style={{ color: 'green' }}>Success</p>}
         </div>
 
-        <Button disabled={blockedAction} onClick={handleLockAction}>Lock This Action 🔒</Button>
-        <Button onClick={handleGetLockedBlocksData}>Execute Locked Blocks 🔥</Button>
+        <div className="flex gap-8">
+          <Button variant='secondary' className="hover:bg-slate-400" disabled={blockedAction} onClick={handleLockAction}>Lock This Action 🔒</Button>
+          <Button variant='secondary' className="bg-green-600 text-white hover:bg-green-900" onClick={handleGetLockedBlocksData}>Execute Locked Blocks 🔥</Button>
+        </div>
       </div>
     </div>
   );
