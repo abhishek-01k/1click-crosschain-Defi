@@ -70,7 +70,7 @@ const ACTIONS: { [key in ActionType]: Action } = {
   [ActionType.SWAP]: {
     type: ActionType.SWAP,
     name: ActionType.SWAP,
-    availableProtocols: [ProtocolName.CHAINFLIP, ProtocolName.THORCHAIN],
+    availableProtocols: [ProtocolName.CHAINFLIP, ProtocolName.THORCHAIN , ProtocolName.MAYOCHAIN],
   },
   [ActionType.TRANSFER]: {
     type: ActionType.TRANSFER,
