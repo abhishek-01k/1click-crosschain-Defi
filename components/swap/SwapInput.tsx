@@ -42,8 +42,7 @@ const SwapInput = () => {
 
         if (senderAddress) {
             try {
-                const THORSWAP_QUOTE_BASE_URL =
-                    "https://api.thorswap.net/aggregator/tokens/quote";
+                const THORSWAP_QUOTE_BASE_URL = "https://api.thorswap.net/aggregator/tokens/quote";
                 const thorswapApiUrl = new URL(THORSWAP_QUOTE_BASE_URL);
                 thorswapApiUrl.searchParams.append("sellAsset", `${fromToken}.${fromToken}`);
                 thorswapApiUrl.searchParams.append("buyAsset", `${toToken}.${toToken}`);
@@ -143,7 +142,7 @@ const SwapInput = () => {
                         type='number'
                         value={sellamount}
                         onChange={(e) => {
-                            const value = parseInt(e.target.value, 10);
+                            const value = parseFloat(e.target.value);
 
                             if (!isNaN(value) && value >= 0) {
                                 setSellAmount(value);
