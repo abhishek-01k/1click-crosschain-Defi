@@ -41,6 +41,7 @@ export const getSwapKitClient = (
 
   const client = SwapKit({ ...swapKitParams, wallets, plugins });
 
+  // @ts-ignore
   clientCache.set(key, client);
 
   return client;
