@@ -119,7 +119,7 @@ export default function Component() {
                     <div className="grid gap-1">
                       <h3 className="text-xl font-bold">SwapKit API and SDK</h3>
                       <p className="text-muted-foreground">
-                        Leverage SwapKit's powerful API and SDK to seamlessly integrate cross-chain swaps and liquidity
+                        Leverage SwapKit&apos;s powerful API and SDK to seamlessly integrate cross-chain swaps and liquidity
                         management.
                       </p>
                     </div>
@@ -128,7 +128,7 @@ export default function Component() {
                     <div className="grid gap-1">
                       <h3 className="text-xl font-bold">ThorSwap</h3>
                       <p className="text-muted-foreground">
-                        Tap into ThorSwap's extensive liquidity pools and cross-chain bridging capabilities.
+                        Tap into ThorSwap&apos;s extensive liquidity pools and cross-chain bridging capabilities.
                       </p>
                     </div>
                   </li>
@@ -136,7 +136,7 @@ export default function Component() {
                     <div className="grid gap-1">
                       <h3 className="text-xl font-bold">ChainFlip</h3>
                       <p className="text-muted-foreground">
-                        Utilize ChainFlip's decentralized cross-chain exchange to execute your strategies.
+                        Utilize ChainFlip&apos;s decentralized cross-chain exchange to execute your strategies.
                       </p>
                     </div>
                   </li>
@@ -144,7 +144,7 @@ export default function Component() {
                     <div className="grid gap-1">
                       <h3 className="text-xl font-bold">MayoChain</h3>
                       <p className="text-muted-foreground">
-                        Leverage MayoChain's advanced cross-chain capabilities to expand your DeFi horizons.
+                        Leverage MayoChain&apos;s advanced cross-chain capabilities to expand your DeFi horizons.
                       </p>
                     </div>
                   </li>
